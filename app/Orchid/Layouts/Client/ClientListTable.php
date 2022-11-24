@@ -8,6 +8,7 @@ use Carbon\Carbon;
 use App\Models\User;
 use Orchid\Screen\TD;
 use Carbon\CarbonPeriod;
+use Orchid\Screen\Actions\ModalToggle;
 use Orchid\Screen\Layouts\Table;
 use Orchid\Support\Facades\Layout;
 
@@ -23,6 +24,11 @@ class ClientListTable extends Table
             TD::make('email_verified_at', 'email verified')->canSee($this->isWorkTime())->sort()->render(function (User $user) {
                 return $user->email_verified_at == null ? "not verified" : "verified";
             })->align(TD::ALIGN_RIGHT)->popover('if verified email then user can use this website'),
+            TD::make('action')->render(function (User $user) {
+                return ModalToggle::make('update')->modal('updateClient')->method('update')->modalTitle('client'. $user->id)
+                    ->asyncParameters(['client' => $user->id]);
+            }),
+            TD::make('assessment', 'rate'),
         ];
     }
 

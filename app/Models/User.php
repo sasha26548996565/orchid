@@ -2,9 +2,11 @@
 
 namespace App\Models;
 
-use Orchid\Filters\Filterable;
-use Orchid\Platform\Models\User as Authenticatable;
 use Orchid\Screen\AsSource;
+use Orchid\Filters\Filterable;
+use Propaganistas\LaravelPhone\PhoneNumber;
+use Illuminate\Database\Eloquent\Casts\Attribute;
+use Orchid\Platform\Models\User as Authenticatable;
 
 class User extends Authenticatable
 {
@@ -15,6 +17,8 @@ class User extends Authenticatable
         'email',
         'password',
         'permissions',
+        'phone',
+        'assessment',
     ];
 
     protected $hidden = [
@@ -44,4 +48,11 @@ class User extends Authenticatable
         'created_at',
         'email_verified_at',
     ];
+
+    protected function phone(): Attribute
+    {
+        return Attribute::make(
+            set: fn($phone) => str_replace('+', '', PhoneNumber::make($phone, 'RU')->formatE164()),
+        );
+    }
 }
