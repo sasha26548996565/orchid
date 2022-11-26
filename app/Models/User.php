@@ -52,7 +52,7 @@ class User extends Authenticatable
     protected function phone(): Attribute
     {
         return Attribute::make(
-            set: fn($phone) => str_replace('+', '', PhoneNumber::make($phone, 'RU')->formatE164()),
+            set: fn($phone) => phone_normalized($phone),
         );
     }
 }
