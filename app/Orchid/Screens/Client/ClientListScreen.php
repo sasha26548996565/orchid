@@ -21,12 +21,8 @@ use App\Orchid\Layouts\CreateOrUpdateClient;
 
 class ClientListScreen extends Screen
 {
-    protected readonly string $description;
-
-    public function __construct()
-    {
-        $this->description = 'All clients';
-    }
+    protected string $description = 'All clients';
+    protected string $permission = 'platform.clients';
 
     public function query(): iterable
     {
